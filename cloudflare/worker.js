@@ -3,16 +3,23 @@ addEventListener('scheduled', event => {
   })
   
   async function handleSchedule(scheduledTime) {
-    const response = await fetch('https://localhost:3000/api/daily-content', {
-      method: 'POST',
-    })
+    const endpoint = 'https://nevilleslaw.com/api/daily-content'
   
-    if (!response.ok) {
-      throw new Error('Failed to update daily content')
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+  
+      const result = await response.json()
+      console.log('Daily content updated:', result)
+    } catch (error) {
+      console.error('Error updating daily content:', error)
     }
-  
-    const result = await response.json()
-    console.log('Daily content updated:', result.content)
-  
-    return new Response('Daily content updated successfully', { status: 200 })
   }

@@ -1778,17 +1778,19 @@ const concepts = [
   }
 ];
 
+function generateDailyContent() {
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  const randomConcept = concepts[Math.floor(Math.random() * concepts.length)];
+  return {
+    quote: randomQuote,
+    concept: randomConcept,
+    lastUpdated: new Date().toISOString()
+  };
+}
+
 export async function GET() {
   try {
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    const randomConcept = concepts[Math.floor(Math.random() * concepts.length)];
-
-    const dailyContent = {
-      quote: randomQuote,
-      concept: randomConcept,
-      lastUpdated: new Date().toISOString()
-    };
-
+    const dailyContent = generateDailyContent();
     return NextResponse.json(dailyContent);
   } catch (error) {
     console.error('API: Error generating content:', error);
@@ -1797,6 +1799,13 @@ export async function GET() {
 }
 
 export async function POST() {
-  // For now, just return the same as GET
-  return GET();
+  try {
+    const dailyContent = generateDailyContent();
+    // Here you could save the dailyContent to a database or file if needed
+    console.log('Daily content updated:', dailyContent);
+    return NextResponse.json({ message: 'Daily content updated successfully', content: dailyContent });
+  } catch (error) {
+    console.error('API: Error updating content:', error);
+    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+  }
 }
