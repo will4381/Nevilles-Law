@@ -9,6 +9,8 @@ import { InteractiveQuiz } from "@/components/InteractiveQuiz";
 import { TwitterLink, RedditLink } from "@/components/SocialLink";
 import { cn } from "@/lib/utils"
 
+export const runtime = 'edge';
+
 function TiltCard({ children, className }: { children: ReactNode, className?: string }): JSX.Element {
   const focusRingClass = "focus-within:ring-2 focus-within:ring-primary/30 focus-within:ring-offset-2 focus-within:ring-offset-zinc-900";
   const [isHovered, setIsHovered] = useState(false);

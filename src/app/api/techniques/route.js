@@ -1,15 +1,736 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+
+export const runtime = 'edge';
+
+// Mock data - replace this with actual data or fetch from a compatible data source
+const concepts_techniques = [
+    {
+      "description": "Assume your desired reality to manifest it into existence.",
+      "level": "beginner",
+      "tags": [
+        "manifestation",
+        "assumption",
+        "reality_creation"
+      ]
+    },
+    {
+      "description": "Focus on feelings to manifest your desires effectively.",
+      "level": "beginner",
+      "tags": [
+        "emotions",
+        "manifestation",
+        "feeling"
+      ]
+    },
+    {
+      "description": "Revise past events to create a desired present reality.",
+      "level": "intermediate",
+      "tags": [
+        "revision",
+        "past",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Use visualization techniques to bring your desires into reality.",
+      "level": "intermediate",
+      "tags": [
+        "visualization",
+        "manifestation",
+        "technique"
+      ]
+    },
+    {
+      "description": "Enhance self-image to align with desired outcomes.",
+      "level": "intermediate",
+      "tags": [
+        "self-image",
+        "manifestation",
+        "self-concept"
+      ]
+    },
+    {
+      "description": "Engage in inner dialogues to shape your beliefs.",
+      "level": "beginner",
+      "tags": [
+        "inner_talk",
+        "beliefs",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Live as if your desires are already fulfilled.",
+      "level": "intermediate",
+      "tags": [
+        "wish_fulfilled",
+        "manifestation",
+        "belief"
+      ]
+    },
+    {
+      "description": "Use relaxation techniques for deeper imaginings and manifestations.",
+      "level": "intermediate",
+      "tags": [
+        "relaxation",
+        "imagination",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Monitor and control thoughts for effective manifestation.",
+      "level": "beginner",
+      "tags": [
+        "mental_diet",
+        "thoughts",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Revise memories to change emotional outcomes in your life.",
+      "level": "intermediate",
+      "tags": [
+        "memories",
+        "revision",
+        "emotions"
+      ]
+    },
+    {
+      "description": "Dedicate a day for spiritual connection and rest.",
+      "level": "beginner",
+      "tags": [
+        "spirituality",
+        "rest",
+        "self-care"
+      ]
+    },
+    {
+      "description": "Identify events leading to desired outcomes; connect the dots.",
+      "level": "intermediate",
+      "tags": [
+        "manifestation",
+        "events",
+        "path"
+      ]
+    },
+    {
+      "description": "Access the power of 'I Am' for self-definition.",
+      "level": "beginner",
+      "tags": [
+        "identity",
+        "self",
+        "power"
+      ]
+    },
+    {
+      "description": "Visualize desires as already accomplished to create reality.",
+      "level": "intermediate",
+      "tags": [
+        "visualization",
+        "manifestation",
+        "wish_fulfilled"
+      ]
+    },
+    {
+      "description": "Nurture positive inner dialogue to shift beliefs.",
+      "level": "beginner",
+      "tags": [
+        "affirmations",
+        "beliefs",
+        "inner_talk"
+      ]
+    },
+    {
+      "description": "Focus attention on desired outcomes to produce effective results.",
+      "level": "beginner",
+      "tags": [
+        "attention",
+        "outcomes",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Use dreams to explore and manifest desires consciously.",
+      "level": "intermediate",
+      "tags": [
+        "dreams",
+        "consciousness",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Align thoughts with beliefs to manifest effectively.",
+      "level": "intermediate",
+      "tags": [
+        "beliefs",
+        "thoughts",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Cultivate awareness to realize your true potential.",
+      "level": "intermediate",
+      "tags": [
+        "awareness",
+        "potential",
+        "self-realization"
+      ]
+    },
+    {
+      "description": "Emphasize faith to realize desires and beliefs.",
+      "level": "beginner",
+      "tags": [
+        "faith",
+        "beliefs",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Create desired realities through conscious assumption of beliefs.",
+      "level": "intermediate",
+      "tags": [
+        "assumption",
+        "beliefs",
+        "reality_creation"
+      ]
+    },
+    {
+      "description": "Recognize consciousness as the sole reality shaping experiences.",
+      "level": "intermediate",
+      "tags": [
+        "consciousness",
+        "reality",
+        "self-awareness"
+      ]
+    },
+    {
+      "description": "Exploring the fourth dimension for expanded consciousness understanding.",
+      "level": "intermediate",
+      "tags": [
+        "dimensions",
+        "consciousness",
+        "exploration"
+      ]
+    },
+    {
+      "description": "Value and nurture your most precious and unique essence.",
+      "level": "intermediate",
+      "tags": [
+        "self-worth",
+        "value",
+        "essence"
+      ]
+    },
+    {
+      "description": "Feel natural and authentic while imagining desires fulfilled.",
+      "level": "intermediate",
+      "tags": [
+        "naturalness",
+        "authenticity",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Use imagination to shape reality and manifest desires.",
+      "level": "beginner",
+      "tags": [
+        "imagination",
+        "reality",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Practice present-moment awareness for enhanced intuition and clarity.",
+      "level": "beginner",
+      "tags": [
+        "mindfulness",
+        "awareness",
+        "intuition"
+      ]
+    },
+    {
+      "description": "Engage in focused prayer to manifest specific desires.",
+      "level": "intermediate",
+      "tags": [
+        "prayer",
+        "focus",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Mentally rehearse actions to align with desired outcomes.",
+      "level": "intermediate",
+      "tags": [
+        "rehearsal",
+        "outcomes",
+        "alignment"
+      ]
+    },
+    {
+      "description": "Maintain persistence to overcome challenges in manifestation.",
+      "level": "intermediate",
+      "tags": [
+        "persistence",
+        "challenges",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Harness the power of imaging to create desired outcomes.",
+      "level": "intermediate",
+      "tags": [
+        "imaging",
+        "creation",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Understand and align with the core of your desires.",
+      "level": "intermediate",
+      "tags": [
+        "desires",
+        "alignment",
+        "understanding"
+      ]
+    },
+    {
+      "description": "Awake the imaginative aspect for conscious reality creation.",
+      "level": "beginner",
+      "tags": [
+        "imagination",
+        "creativity",
+        "consciousness"
+      ]
+    },
+    {
+      "description": "Access inner consciousness for spiritual awakening and growth.",
+      "level": "intermediate",
+      "tags": [
+        "spirituality",
+        "growth",
+        "consciousness"
+      ]
+    },
+    {
+      "description": "Assume responsibility for your life and its manifestations.",
+      "level": "beginner",
+      "tags": [
+        "responsibility",
+        "life",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Transform belief systems for improved manifestation abilities.",
+      "level": "intermediate",
+      "tags": [
+        "beliefs",
+        "transformation",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Cultivate unwavering faith in unseen aspects of life.",
+      "level": "beginner",
+      "tags": [
+        "faith",
+        "unseen",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Explore Christ consciousness to understand your true self.",
+      "level": "intermediate",
+      "tags": [
+        "spirituality",
+        "self",
+        "consciousness"
+      ]
+    },
+    {
+      "description": "Utilize affirmations to reinforce positive beliefs and self-image.",
+      "level": "beginner",
+      "tags": [
+        "affirmations",
+        "positivity",
+        "self-image"
+      ]
+    },
+    {
+      "description": "Create strong mental imagery to solidify intentions.",
+      "level": "intermediate",
+      "tags": [
+        "imagery",
+        "intention",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Build a conviction to bolster manifesting efforts.",
+      "level": "intermediate",
+      "tags": [
+        "conviction",
+        "manifestation",
+        "beliefs"
+      ]
+    },
+    {
+      "description": "Be present to connect with your inner essence.",
+      "level": "beginner",
+      "tags": [
+        "presence",
+        "inner_self",
+        "awareness"
+      ]
+    },
+    {
+      "description": "Direct mental focus towards conscious creation and manifestation.",
+      "level": "intermediate",
+      "tags": [
+        "focus",
+        "creation",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Explore imagination as the core of manifestation efforts.",
+      "level": "beginner",
+      "tags": [
+        "imagination",
+        "core",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Engage mind power for directed and intentional manifestation.",
+      "level": "beginner",
+      "tags": [
+        "mind_power",
+        "intention",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Direct inner focus to navigate personal desires for manifestation.",
+      "level": "intermediate",
+      "tags": [
+        "focus",
+        "desires",
+        "navigation"
+      ]
+    },
+    {
+      "description": "Emphasize imagination in the process of creating desired realities.",
+      "level": "beginner",
+      "tags": [
+        "imagination",
+        "creation",
+        "realities"
+      ]
+    },
+    {
+      "description": "Explore and manipulate thoughts for enhanced reality creation.",
+      "level": "intermediate",
+      "tags": [
+        "thoughts",
+        "manipulation",
+        "reality"
+      ]
+    },
+    {
+      "description": "Adapt expectations to align with intentions for manifestation.",
+      "level": "intermediate",
+      "tags": [
+        "expectations",
+        "alignment",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Live fully in the wish fulfilled to empower manifestation.",
+      "level": "intermediate",
+      "tags": [
+        "wish_fulfilled",
+        "empowerment",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Cultivate powerful mental images to create experiences.",
+      "level": "beginner",
+      "tags": [
+        "mental_images",
+        "creation",
+        "experiences"
+      ]
+    },
+    {
+      "description": "Awareness of presence leads to deeper understanding of self.",
+      "level": "intermediate",
+      "tags": [
+        "awareness",
+        "understanding",
+        "self"
+      ]
+    },
+    {
+      "description": "Engage in conscious creation for fulfilling life experiences.",
+      "level": "beginner",
+      "tags": [
+        "conscious_creation",
+        "fulfillment",
+        "experience"
+      ]
+    },
+    {
+      "description": "Imagination activates internal belief structures necessary for manifestation.",
+      "level": "intermediate",
+      "tags": [
+        "activation",
+        "belief_structure",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Adapt desired states to achieve intended life results.",
+      "level": "intermediate",
+      "tags": [
+        "desired_states",
+        "adaptation",
+        "results"
+      ]
+    },
+    {
+      "description": "Change personal reality through focused attention and intention.",
+      "level": "beginner",
+      "tags": [
+        "reality_change",
+        "attention",
+        "intention"
+      ]
+    },
+    {
+      "description": "Utilize mental mastery techniques to create desired outcomes.",
+      "level": "intermediate",
+      "tags": [
+        "mental_mastery",
+        "outcomes",
+        "technique"
+      ]
+    },
+    {
+      "description": "Shift inner conversations for positive life changes.",
+      "level": "beginner",
+      "tags": [
+        "inner_conversation",
+        "positive_change",
+        "life"
+      ]
+    },
+    {
+      "description": "Utilize visualization for channeling deeper energies into manifestations.",
+      "level": "intermediate",
+      "tags": [
+        "visualization",
+        "energy",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Generate mental constructs to visualize desired outcomes.",
+      "level": "beginner",
+      "tags": [
+        "mental_constructs",
+        "visualization",
+        "outcomes"
+      ]
+    },
+    {
+      "description": "Explore thoughtful imagery to activate subconscious desires.",
+      "level": "intermediate",
+      "tags": [
+        "thoughtful_imagery",
+        "subconscious",
+        "desires"
+      ]
+    },
+    {
+      "description": "Align beliefs with conscious intention for effective creation.",
+      "level": "intermediate",
+      "tags": [
+        "beliefs",
+        "intention",
+        "creation"
+      ]
+    },
+    {
+      "description": "Awareness of imagination serves as a foundation for creativity.",
+      "level": "beginner",
+      "tags": [
+        "imagination",
+        "creativity",
+        "foundation"
+      ]
+    },
+    {
+      "description": "Engage in mental exercises to strengthen manifesting focus.",
+      "level": "intermediate",
+      "tags": [
+        "mental_exercises",
+        "focus",
+        "manifesting"
+      ]
+    },
+    {
+      "description": "Utilize creative expression for personal evolution and manifestation.",
+      "level": "intermediate",
+      "tags": [
+        "creative_expression",
+        "evolution",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Shift beliefs to unlock the power of manifestation.",
+      "level": "beginner",
+      "tags": [
+        "beliefs",
+        "power",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Maintain inspiring mental environments for clearer life direction.",
+      "level": "intermediate",
+      "tags": [
+        "mental_environment",
+        "clarity",
+        "direction"
+      ]
+    },
+    {
+      "description": "Use focused intention for personal growth and transformation.",
+      "level": "beginner",
+      "tags": [
+        "intention",
+        "growth",
+        "transformation"
+      ]
+    },
+    {
+      "description": "Embrace the power of creative thought in manifesting desires.",
+      "level": "intermediate",
+      "tags": [
+        "creative_thought",
+        "power",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Utilize consciousness tools to shape favorable life experiences.",
+      "level": "beginner",
+      "tags": [
+        "consciousness",
+        "tools",
+        "life_experiences"
+      ]
+    },
+    {
+      "description": "Recalibrate thoughts to improve the manifestation of reality.",
+      "level": "intermediate",
+      "tags": [
+        "thought_recalibration",
+        "improvement",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Align with personal truths for effective manifesting.",
+      "level": "beginner",
+      "tags": [
+        "truths",
+        "alignment",
+        "manifesting"
+      ]
+    },
+    {
+      "description": "Incorporate positive affirmations into daily routines for manifestation.",
+      "level": "beginner",
+      "tags": [
+        "affirmations",
+        "positivity",
+        "daily"
+      ]
+    },
+    {
+      "description": "Utilize mental visualization to enhance manifestation practices.",
+      "level": "beginner",
+      "tags": [
+        "visualization",
+        "enhancement",
+        "manifestation"
+      ]
+    },
+    {
+      "description": "Embed desires in your subconscious for effective realization.",
+      "level": "intermediate",
+      "tags": [
+        "subconscious",
+        "realization",
+        "desires"
+      ]
+    },
+    {
+      "description": "Explore personal beliefs to align with desired realities.",
+      "level": "intermediate",
+      "tags": [
+        "beliefs",
+        "alignment",
+        "realities"
+      ]
+    },
+    {
+      "description": "Engage positive thoughts to attract favorable life conditions.",
+      "level": "beginner",
+      "tags": [
+        "positive_thoughts",
+        "attraction",
+        "life_conditions"
+      ]
+    },
+    {
+      "description": "Transform mindset to achieve profound personal changes.",
+      "level": "intermediate",
+      "tags": [
+        "mindset",
+        "transformation",
+        "personal_change"
+      ]
+    },
+    {
+      "description": "Direct inner awareness for enhanced creative power.",
+      "level": "beginner",
+      "tags": [
+        "inner_awareness",
+        "creativity",
+        "power"
+      ]
+    },
+    {
+      "description": "Focus on your imagination for creative exploration.",
+      "level": "beginner",
+      "tags": [
+        "imagination",
+        "exploration",
+        "creativity"
+      ]
+    }
+  ];
 
 export async function GET() {
   try {
-    const jsonPath = path.join(process.cwd(), 'public', 'concepts_techniques.json');
-    const jsonData = fs.readFileSync(jsonPath, 'utf8');
-    const parsedData = JSON.parse(jsonData);
-    return NextResponse.json(parsedData);
+    return NextResponse.json(concepts_techniques);
   } catch (error) {
-    console.error('API: Error reading or parsing JSON:', error);
+    console.error('API: Error generating response:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
