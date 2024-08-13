@@ -153,8 +153,7 @@ export default function Home(): JSX.Element {
     description: "Visualization is a powerful tool in manifesting your desires. Follow these steps to enhance your practice.",
     keyConcepts: [
       "Vividness: Make your visualization as detailed as possible",
-      "Emotion: Feel the joy and gratitude of your desire fulfilled",
-      "Persistence: Practice regularly for best results"
+      "Emotion: Feel the joy and gratitude of your desire fulfilled"
     ],
     tip: "For best results, practice visualization right before sleep when your mind is most receptive."
   };

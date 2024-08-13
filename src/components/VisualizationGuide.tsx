@@ -57,7 +57,7 @@ export function VisualizationGuide({ title, description, keyConcepts, tip }: Vis
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardContent className="p-6">
-        <h2 className="text-2xl font-serif font-bold text-primary mb-10">{title}</h2>
+        <h2 className="text-2xl font-serif font-bold text-primary mb-4">{title}</h2>
         <p className="text-gray-300 font-sans text-sm mb-4">{description}</p>
         
         <div className="mb-5">
