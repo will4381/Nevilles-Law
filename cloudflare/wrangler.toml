@@ -1,0 +1,9 @@
+name = "daily-content-updater"
+main = "worker.js"
+compatibility_date = "2023-05-18"
+
+account_id = "your-account-id"
+workers_dev = true
+
+[triggers]
+crons = ["0 0 * * *"]
