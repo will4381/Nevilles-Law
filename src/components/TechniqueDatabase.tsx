@@ -130,7 +130,7 @@ export function TechniqueDatabase() {
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-primary" />
           <Input
             type="search"
-            placeholder="Search techniques..."
+            placeholder="Search techniques and concepts..."
             className="pl-8 bg-black bg-opacity-20 text-white placeholder-gray-400 border-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
