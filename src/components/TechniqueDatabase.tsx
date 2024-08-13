@@ -49,6 +49,7 @@ export function TechniqueDatabase() {
     setIsLoading(true);
     fetch('/api/techniques')
       .then(response => {
+        console.log('Raw response:', response);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

@@ -63,7 +63,7 @@ export function DailyQuote({ text, source, year }: QuoteProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardContent className="p-6">
-        <h2 className="text-2xl font-serif font-bold text-primary mb-4">Daily Quote</h2>
+        <h2 className="text-2xl font-serif font-bold text-primary mb-4">A Quote From Neville</h2>
         <p className="text-lg text-gray-300 mb-4 font-serif italic">{`"${text}"`}</p>
         <div className="flex justify-between items-center">
           <p className="text-sm text-gray-500">{`${source}, ${year}`}</p>

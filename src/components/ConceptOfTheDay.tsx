@@ -56,7 +56,7 @@ export function ConceptOfTheDay({ name, explanation, keyPoints, applicationTip }
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardContent className="p-6">
-        <h2 className="text-2xl font-serif font-bold text-primary mb-6">Concept of the Day</h2>
+        <h2 className="text-2xl font-serif font-bold text-primary mb-6">Random Concept</h2>
         <h3 className="text-xl font-serif font-semibold text-white mb-6">{name}</h3>
         <div className="bg-black bg-opacity-20 p-4 rounded-md mb-4 transition-all duration-300 hover:transform hover:scale-105 hover:bg-opacity-30 hover:shadow-[0_0_3px_1px_rgba(255,255,255,0.3)]">
           <h4 className="font-serif font-semibold text-white mb-2">Explanation:</h4>

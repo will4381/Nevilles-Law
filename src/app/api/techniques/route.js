@@ -726,11 +726,13 @@ const concepts_techniques = [
     }
   ];
 
-export async function GET() {
-  try {
-    return NextResponse.json(concepts_techniques);
-  } catch (error) {
-    console.error('API: Error generating response:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  export async function GET() {
+    console.log('API: Received request');
+    try {
+      console.log('API: Sending response', JSON.stringify({ concepts_techniques }));
+      return NextResponse.json({ concepts_techniques });
+    } catch (error) {
+      console.error('API: Error generating response:', error);
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
   }
-}
